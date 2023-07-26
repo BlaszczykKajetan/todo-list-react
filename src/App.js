@@ -11,8 +11,8 @@ function App() {
   const [hideDone, setHideDone] = useState(false);
   const [tasks, setTasks] = useState([
     { id: 1, content: "Przenieść listę do React", done: false },
-  { id: 2, content: "Wyprowadzić psa", done: true },
-]);
+    { id: 2, content: "Wyprowadzić psa", done: true },
+  ]);
 
   const toggleHideDone = () => {
     setHideDone(hideDone => !hideDone);
@@ -25,7 +25,7 @@ function App() {
   const toggleTaskDone = (id) => {
     setTasks(tasks => tasks.map(task => {
       if (task.id === id) {
-        return { ...task, done: !task.done};
+        return { ...task, done: !task.done };
       }
 
       return task;
@@ -34,29 +34,41 @@ function App() {
 
   const setAllDone = () => {
     setTasks(tasks => tasks.map(task => ({
-      ...task, 
-      done: true})));
+      ...task,
+      done: true
+    })));
   };
+
+  const addNewTask = (content) => {
+    setTasks(tasks => [
+      ...tasks,
+      {
+        content,
+        done: false,
+        id: tasks.length === 0 ? 1 : tasks[tasks.length - 1].id + 1,
+      }
+    ])
+  }
 
   return (
     <Container>
       <Header title="Lista zadań" />
-      <Section title="Dodaj nowe zadanie" body={<Form />} />
+      <Section title="Dodaj nowe zadanie" body={<Form addNewTask={addNewTask} />} />
       <Section
         title="Lista zadań"
         extraHeaderContent={
-          <Buttons 
-          tasks={tasks} 
-          hideDone={hideDone} 
-          toggleHideDone={toggleHideDone}
-          setAllDone={setAllDone} />
+          <Buttons
+            tasks={tasks}
+            hideDone={hideDone}
+            toggleHideDone={toggleHideDone}
+            setAllDone={setAllDone} />
         }
         body={
-        <Tasks tasks={tasks} 
-        hideDone={hideDone} 
-        removeTask={removeTask}
-        toggleTaskDone={toggleTaskDone}
-        />}
+          <Tasks tasks={tasks}
+            hideDone={hideDone}
+            removeTask={removeTask}
+            toggleTaskDone={toggleTaskDone}
+          />}
       />
     </Container>
   );
